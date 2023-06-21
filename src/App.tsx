@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Suspense } from 'react';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './components/dashboard';
+import Login from './components/login';
+import NotFound from './components/notFound';
+import WithAuth from './components/withAuth';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={<p>loading...</p>}>
+        <Routes>
+            <Route path="/" element={
+              <WithAuth>
+                <Dashboard />
+              </WithAuth>
+            } />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound/>} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
